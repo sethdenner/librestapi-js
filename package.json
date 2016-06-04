@@ -1,48 +1,49 @@
 {
-  "name": "librestapi",
-  "version": "0.1.0",
-  "description": "Light framework for defining javascript interfaces for REST based web services.",
-  "main": "lib/librestapi.js",
-  "scripts": {
-    "build": "WEBPACK_ENV=build webpack --progress --profile --colors",
-    "dev": "WEBPACK_ENV=dev webpack --progress --profile --colors --watch",
-    "test": "jest"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/knotis/librestapi-js.git"
-  },
-  "keywords": [
-    "knotis",
-    "client",
-    "application",
-    "app",
-    "javascript",
-    "web",
-    "mobile",
-    "rest",
-    "api"
-  ],
-  "author": "Knotis Inc.",
-  "license": "LicenseRef-LICENSE",
-  "bugs": {
-    "url": "https://github.com/knotis/librestapi-js/issues"
-  },
-  "homepage": "https://github.com/knotis/librestapi-js#readme",
-  "devDependencies": {
-    "babel": "^6.5.2",
-    "babel-core": "^6.9.1",
-    "babel-eslint": "^6.0.4",
-    "babel-loader": "^6.2.4",
-    "babel-plugin-add-module-exports": "^0.2.1",
-    "babel-preset-es2015": "^6.9.0",
-    "eslint": "^2.11.1",
-    "eslint-loader": "^1.3.0",
-    "webpack": "^1.13.1"
-  },
-  "dependencies": {
-    "node.extend": "^1.1.5",
-    "promise": "^7.1.1",
-    "querystring": "^0.2.0"
-  }
+    "name": "librestapi",
+    "version": "0.1.0",
+    "description": "Light framework for defining javascript interfaces for REST based web services.",
+    "main": "lib/librestapi.js",
+    "scripts": {
+	"build": "WEBPACK_ENV=build webpack --progress --profile --colors",
+	"dev": "WEBPACK_ENV=dev webpack --progress --profile --colors --watch",
+	"prepublish": "npm run build",
+	"test": "jest"
+    },
+    "repository": {
+	"type": "git",
+	"url": "git+https://github.com/knotis/librestapi-js.git"
+    },
+    "keywords": [
+	"knotis",
+	"client",
+	"application",
+	"app",
+	"javascript",
+	"web",
+	"mobile",
+	"rest",
+	"api"
+    ],
+    "author": "Knotis Inc.",
+    "license": "LicenseRef-LICENSE",
+    "bugs": {
+	"url": "https://github.com/knotis/librestapi-js/issues"
+    },
+    "homepage": "https://github.com/knotis/librestapi-js#readme",
+    "devDependencies": {
+	"babel": "^6.5.2",
+	"babel-core": "^6.9.1",
+	"babel-eslint": "^6.0.4",
+	"babel-loader": "^6.2.4",
+	"babel-plugin-add-module-exports": "^0.2.1",
+	"babel-preset-es2015": "^6.9.0",
+	"eslint": "^2.11.1",
+	"eslint-loader": "^1.3.0",
+	"webpack": "^1.13.1"
+    },
+    "dependencies": {
+	"node.extend": "^1.1.5",
+	"promise": "^7.1.1",
+	"querystring": "^0.2.0"
+    }
 }

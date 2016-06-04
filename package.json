@@ -1,16 +1,11 @@
 {
   "name": "librestapi",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Light framework for defining javascript interfaces for REST based web services.",
-  "main": "index.js",
-  "files": [
-    "index.js",
-    "resource.js",
-    "client.js"
-  ],
+  "main": "lib/librestapi.js",
   "scripts": {
-    "build": "NODE_ENV=server node_modules/.bin/webpack --progress --profile --colors --config webpack.umd.config.js",
-    "build-browser": "NODE_ENV=cdn node_modules/.bin/webpack --progress --profile --colors --config webpack.cdn.config.js",
+    "build": "WEBPACK_ENV=build webpack --progress --profile --colors",
+    "dev": "WEBPACK_ENV=dev webpack --progress --profile --colors --watch",
     "test": "jest"
   },
   "repository": {
@@ -35,17 +30,19 @@
   },
   "homepage": "https://github.com/knotis/librestapi-js#readme",
   "devDependencies": {
-    "html-webpack-plugin": "^2.19.0",
-    "babel-loader": "^5.4.0",
-    "jest-cli": "^0.9.0",
-    "webpack": "^1.13.0"
+    "babel": "^6.5.2",
+    "babel-core": "^6.9.1",
+    "babel-eslint": "^6.0.4",
+    "babel-loader": "^6.2.4",
+    "babel-plugin-add-module-exports": "^0.2.1",
+    "babel-preset-es2015": "^6.9.0",
+    "eslint": "^2.11.1",
+    "eslint-loader": "^1.3.0",
+    "webpack": "^1.13.1"
   },
   "dependencies": {
     "node.extend": "^1.1.5",
     "promise": "^7.1.1",
     "querystring": "^0.2.0"
-  },
-  "browser": {
-    "fs": false
   }
 }

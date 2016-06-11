@@ -23,6 +23,8 @@ coverage
 build/Release
 
 # Built external library
+dist/
+build/
 lib/
 
 # Dependency directory

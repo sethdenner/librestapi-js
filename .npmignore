@@ -1,2 +1,5 @@
 # Ignore source directory
 src/
+tests/
+node_modules/
+webpack.config.js

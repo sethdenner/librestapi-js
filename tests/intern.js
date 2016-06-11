@@ -36,21 +36,6 @@ define({
     // If you want to use a different loader than the default loader, see
     // <https://theintern.github.io/intern/#option-useLoader> for more information.
     loaderOptions: {
-        packages: [
-            {
-                name: 'node.extend',
-                location: 'node_modules/node.extend',
-                main: 'index.js'
-            }, {
-                name: 'promise',
-                location: 'node_modules/promise',
-                main: 'index.js'
-            }, {
-                name: 'querystring',
-                location: 'node_modules/querystring',
-                main: 'index.js'
-            }
-        ]
     },
 
     // Unit test suite(s) to run in each browser

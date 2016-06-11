@@ -1,17 +1,16 @@
-import http from 'http';
-import https from 'https';
+import { Request } from 'whatwg-fetch';
+import { URLSearchParams } from 'urlsearchparams';
 import querystring from 'querystring';
 import extend from 'node.extend';
-import Promise from 'promise';
+import { Promise } from 'es6-promise';
+import fetch from './compat/fetch';
 
 class Client {
     constructor(options) {
         var defaults = {
             api_key: null,
             api_root: {},
-            auth_uri: null,
-            request_timeout: 5000,
-            local_storage_credentials_key: 'api_credentials'
+            auth_uri: null
         };
 
         this.options = extend(
@@ -62,16 +61,15 @@ class Client {
     }
 
     _prepare(options){
-        if(typeof options.data == 'undefined'){
+        if(typeof options.body == 'undefined'){
             return null;
         }
 
         if (
-            null === options.data ||
-            typeof options.data !== 'object'
+            null === options.body ||
+            typeof options.body !== 'object'
         ) {
-            options.data = null;
-
+            options.body = null;
             return options;
         }
 
@@ -79,20 +77,28 @@ class Client {
             'POST' !== options.method &&
             'PUT' !== options.method
         ) {
-            options.path = [
-                options.path,
-                querystring.stringify(options.data)
-            ].join('?');
+            if (-1 === options.uri.indexOf('?')) {
+                options.uri += '?'
+            }
 
-            options.data = null;
+            options.uri += querystring.stringify(options.body);
+            options.body = undefined;
 
         } else {
-            options.path = [
-                options.path
-            ].join('?');
-
             options.headers['Content-Type'] = 'application/x-www-form-urlencoded';
-            options.data = querystring.stringify(options.data);
+
+            let formData = new FormData();
+
+            for (let i in options.body) {
+                formData.append(
+                    i,
+                    options.body[i]
+                );
+
+            }
+
+            options.body = formData;
+
         }
 
         return options;
@@ -112,61 +118,55 @@ class Client {
 
             }
 
-            let reqCtx = {api:this, payload:[]};
             let options = this._prepare({
-                    protocol: uri.protocol,
-                    data: data,
-                    host: uri.host,
-                    headers: headers,
-                    path: uri.path,
-                    pathname: uri.path,
-                    content_type: 'application/x-www-form-urlencoded',
-                    method: method,
-                    withCredentials: false
-                });
-            let conx = (options.protocol && options.protocol.match(/https/)) ? https : http;
-            let req = conx.request(
-                options,
+                uri: uri,
+                method: method,
+                headers: headers,
+                body: data,
+            });
+
+            fetch(uri, options).then(
                 function(response) {
-                    response.on('data', function(chunk){
-                        reqCtx.payload.push(chunk);
+                    if (response.ok) {
+                        let contentType = response.headers.get('content-type');
 
-                    });
-
-                    response.on('end', function(){
                         if (
-                            0 !== reqCtx.payload.length &&
-                            response.headers['content-type'] == 'application/json'
+                            contentType &&
+                            contentType.indexOf('application/json') !== -1
                         ) {
-                            reqCtx.payload = JSON.parse(reqCtx.payload.join(''));
+                            return repsonse.json().then((json) => {
+                                resolve({
+                                    status_code: response.status,
+                                    data: JSON.parse(json)
+                                });
 
-                        } else{
-                            reqCtx.payload = reqCtx.payload.join('');
+                            }, (reason) => {
+                                reject(reason);
+                            });
+                            
+                        } else {
+                            return response.text().then((text) => {
+                                resolve({
+                                    status_code: response.status,
+                                    data: text
+                                });
 
+                            }, (reason) => {
+                                reject(reason);
+                            });
                         }
+                        
+                    } else {
+                        reject(response);
 
-                        resolve({
-                            status_code: this.statusCode,
-                            data: reqCtx.payload
-                        });
+                    }
 
-                    });
+                }, (reason) => {
+                    reject(reason);
 
                 }
             );
 
-            req.on('error', function(e) {
-                reject(e);
-            });
-
-            if (
-                options.method === 'POST' ||
-                options.method === 'PUT'
-            ) {
-                req.write(options.data);
-            }
-
-            req.end();
         });
 
     }
@@ -180,6 +180,7 @@ class Client {
             uri,
             credentials
         );
+
     };
 };
 

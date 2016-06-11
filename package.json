@@ -1,54 +1,61 @@
 {
     "name": "librestapi",
-    "version": "0.2.4",
+    "version": "0.3.0",
     "description": "Light framework for defining javascript interfaces for REST based web services.",
     "main": "dist/index.js",
     "scripts": {
-        "build": "babel src --out-dir dist",
-        "clean": "rm -rf dist/*",
-        "build-dev": "babel src --out-dir dist --source-maps",
-        "build-web": "WEBPACK_ENV=web webpack --progress --profile --colors",
-        "prepublish": "npm run clean && npm run build",
-        "test": "npm run build-dev && intern-client config=tests/intern || true"
+	"build": "babel src --out-dir dist",
+	"clean": "rm -rf dist/*",
+	"build-dev": "babel src --out-dir dist --source-maps",
+	"build-web": "WEBPACK_ENV=web webpack --progress --profile --colors",
+	"prepublish": "npm run clean && npm run build",
+	"start-fakeapi": "babel tests/api/server.js | nohup node &> /dev/null & echo $!",
+	"test": "./tests/run.sh"
     },
     "repository": {
-        "type": "git",
-        "url": "git+https://github.com/knotis/librestapi-js.git"
+	"type": "git",
+	"url": "git+https://github.com/knotis/librestapi-js.git"
     },
     "keywords": [
-        "knotis",
-        "client",
-        "application",
-        "app",
-        "javascript",
-        "web",
-        "mobile",
-        "rest",
-        "api"
+	"knotis",
+	"client",
+	"application",
+	"app",
+	"javascript",
+	"web",
+	"mobile",
+	"rest",
+	"api"
     ],
     "author": "Knotis Inc.",
     "license": "LicenseRef-LICENSE",
     "bugs": {
-        "url": "https://github.com/knotis/librestapi-js/issues"
+	"url": "https://github.com/knotis/librestapi-js/issues"
     },
     "homepage": "https://github.com/knotis/librestapi-js#readme",
     "devDependencies": {
-        "babel": "^6.5.2",
-        "babel-cli": "^6.10.1",
-        "babel-core": "^6.9.1",
-        "babel-eslint": "^6.0.4",
-        "babel-loader": "^6.2.4",
-        "babel-plugin-add-module-exports": "^0.2.1",
-        "babel-plugin-transform-es2015-modules-amd": "^6.8.0",
-        "babel-preset-es2015": "^6.9.0",
-        "eslint": "^2.11.1",
-        "eslint-loader": "^1.3.0",
-        "intern": "^3.2.3",
-        "webpack": "^1.13.1"
+	"babel": "^6.5.2",
+	"babel-cli": "^6.10.1",
+	"babel-core": "^6.9.1",
+	"babel-eslint": "^6.0.4",
+	"babel-loader": "^6.2.4",
+	"babel-plugin-add-module-exports": "^0.2.1",
+	"babel-plugin-transform-es2015-modules-amd": "^6.8.0",
+	"babel-preset-es2015": "^6.9.0",
+	"eslint": "^2.11.1",
+	"eslint-loader": "^1.3.0",
+	"intern": "^3.2.3",
+	"json-server": "^0.8.14",
+	"node-fetch": "^1.5.3",
+	"webpack": "^1.13.1",
+	"xmlhttprequest": "^1.8.0"
     },
     "dependencies": {
-        "node.extend": "^1.1.5",
-        "promise": "^7.1.1",
-        "querystring": "^0.2.0"
+	"es6-promise": "^3.2.1",
+	"node.extend": "^1.1.5",
+	"promise": "^7.1.1",
+	"querystring": "^0.2.0",
+	"urlsearchparams": "^0.1.1",
+	"whatwg-fetch": "^1.0.0"
     }
 }

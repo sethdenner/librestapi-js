@@ -24,15 +24,25 @@ class Resource {
     }
 
     // returns a uri with an appropriate .path element
-    _assembleUri(id){
-        var path = [this.client.options.api_root.pathname,this.options.api_version];
+    _assembleUri(
+        id
+    ){
+        var path = [
+            this.client.options.api_root.pathname,
+            this.options.api_version
+        ];
         path.push(this.options.path);
 
-        if(id!==undefined && id!==null){
+        if(
+            id!==undefined &&
+            id!==null
+        ){
             path.push(id);
         }
+
         path.push('');
         path = path.join('/');
+
         var uri = extend(
             {},
             this.client.options.api_root, {
@@ -40,6 +50,7 @@ class Resource {
                 pathname : path
             }
         );
+
         return uri;
     };
 
@@ -48,8 +59,13 @@ class Resource {
     // TO DONT!: make a call to an action <--- don't do this.
     //
     _handle_required_credentials(){
-        var credentials = this.client.getCredentials();
-        if (credentials && true === this.options.auth_required && !credentials.access_token) {
+        var credentials = this.api.getCredentials();
+
+        if (
+            credentials &&
+            true === this.options.auth_required &&
+            !credentials.access_token
+        ) {
             throw [
                 'Resource',
                 this.options.name,
@@ -92,7 +108,9 @@ class Resource {
         );
     }
 
-    create(data) {
+    create(
+        data
+    ) {
         var method = 'POST';
         var uri = this._assembleUri();
 
@@ -103,7 +121,10 @@ class Resource {
         );
     };
 
-    update(id, data) {
+    update(
+        id,
+        data
+    ) {
         if (null === id) {
             throw 'Resource.update method requires id parameter.';
         }
@@ -133,13 +154,14 @@ class Resource {
         );
     };
 
-    destroy(id) {
-        var method = 'DELETE';
-
+    destroy(
+        id
+    ) {
         if (null === id) {
             throw 'Resource.destroy method requires id parameter.';
         }
 
+        var method = 'DELETE';
         var uri = this._assembleUri(id);
 
         return this.request(

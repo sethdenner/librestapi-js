@@ -67,13 +67,19 @@ class Client {
             return null;
         }
 
-        if (null === options.data || typeof options.data !== 'object') {
+        if (
+            null === options.data ||
+            typeof options.data !== 'object'
+        ) {
             options.data = null;
-            return options;
 
+            return options;
         }
 
-        if ('POST' !== options.method && 'PUT' !== options.method) {
+        if (
+            'POST' !== options.method &&
+            'PUT' !== options.method
+        ) {
             options.path = [
                 options.path,
                 querystring.stringify(options.data)
@@ -88,7 +94,6 @@ class Client {
 
             options.headers['Content-Type'] = 'application/x-www-form-urlencoded';
             options.data = querystring.stringify(options.data);
-
         }
 
         return options;
@@ -125,10 +130,6 @@ class Client {
             let req = conx.request(
                 options,
                 function(response) {
-                    response.on('error', function(e){
-                        reject(response);
-                    });
-
                     response.on('data', function(chunk){
                         reqCtx.payload.push(chunk);
 
@@ -156,7 +157,14 @@ class Client {
                 }
             );
 
-            if (options.method === 'POST' || options.method === 'PUT') {
+            req.on('error', function(e) {
+                reject(e);
+            });
+
+            if (
+                options.method === 'POST' ||
+                options.method === 'PUT'
+            ) {
                 req.write(options.data);
             }
 

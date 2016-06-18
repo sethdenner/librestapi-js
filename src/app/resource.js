@@ -59,7 +59,7 @@ class Resource {
     // TO DONT!: make a call to an action <--- don't do this.
     //
     _handle_required_credentials(){
-        var credentials = this.api.getCredentials();
+        var credentials = this.client.getCredentials();
 
         if (
             credentials &&

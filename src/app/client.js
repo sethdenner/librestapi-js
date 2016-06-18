@@ -1,8 +1,7 @@
-
-import https from 'https';
 import http from 'http';
-import extend from 'node.extend';
+import https from 'https';
 import querystring from 'querystring';
+import extend from 'node.extend';
 import Promise from 'promise';
 
 class Client {
@@ -114,8 +113,7 @@ class Client {
             }
 
             let reqCtx = {api:this, payload:[]};
-            let response_type,
-                options = this._prepare({
+            let options = this._prepare({
                     protocol: uri.protocol,
                     data: data,
                     host: uri.host,

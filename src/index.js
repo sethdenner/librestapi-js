@@ -1,5 +1,5 @@
-import Resource from './resource';
-import Client from './client';
+import Resource from './app/resource';
+import Client from './app/client';
 
 export {
     Resource,

@@ -39,3 +39,6 @@ build*/
 
 # Hidden directories
 .*/
+
+# Source Maps
+*.map

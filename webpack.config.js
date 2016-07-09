@@ -1,7 +1,8 @@
 var webpack = require('webpack');
 var path = require('path');
 var libraryName = 'librestapi';
-var target, libraryTarget;
+var libraryTarget = 'umd';
+var target;
 var outputFile = libraryName + '.js';
 
 var UglifyJsPlugin = webpack.optimize.UglifyJsPlugin;
@@ -17,6 +18,13 @@ if (env === 'web') {
             'librestapi-deps.min.js'
         )
     );
+    plugins.push(
+        new webpack.ProvidePlugin({
+            'Promise': 'es6-promise',
+            'fetch': 'imports?this=>global!exports?global.fetch!whatwg-fetch'
+        })
+    );
+
     outputFile = libraryName + '.min.js';
 
     entry = {
@@ -24,14 +32,12 @@ if (env === 'web') {
         'librestapiDeps': ["promise", "querystring", "node.extend"]
     }
 
-    libraryTarget = 'var';
     target = 'web';
 
 } else {
     outputFile = libraryName + '.js';
     entry = __dirname + '/src/index.js';
 
-    libraryTarget = 'umd';
     target = 'node';
 
 }

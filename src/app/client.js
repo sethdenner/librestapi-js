@@ -1,5 +1,3 @@
-import { Request } from 'whatwg-fetch';
-import { URLSearchParams } from 'urlsearchparams';
 import querystring from 'querystring';
 import extend from 'node.extend';
 import { Promise } from 'es6-promise';
@@ -86,18 +84,7 @@ class Client {
 
         } else {
             options.headers['Content-Type'] = 'application/x-www-form-urlencoded';
-
-            let formData = new FormData();
-
-            for (let i in options.body) {
-                formData.append(
-                    i,
-                    options.body[i]
-                );
-
-            }
-
-            options.body = formData;
+            options.body = querystring.stringify(options.body);
 
         }
 
@@ -118,14 +105,26 @@ class Client {
 
             }
 
+            let defaultPort = uri.protocol === 'https:' ? '443' : '80';
+
+            let uriString = [
+                uri.protocol,
+                '//',
+                uri.host,
+                ':',
+                uri.port ? uri.port : defaultPort,
+                uri.path
+            ].join('');
+
             let options = this._prepare({
-                uri: uri,
+                uri: uriString,
                 method: method,
                 headers: headers,
                 body: data,
+                credentials: 'omit'
             });
 
-            fetch(uri, options).then(
+            fetch(options.uri, options).then(
                 function(response) {
                     if (response.ok) {
                         let contentType = response.headers.get('content-type');
@@ -134,10 +133,10 @@ class Client {
                             contentType &&
                             contentType.indexOf('application/json') !== -1
                         ) {
-                            return repsonse.json().then((json) => {
+                            return response.json().then((json) => {
                                 resolve({
                                     status_code: response.status,
-                                    data: JSON.parse(json)
+                                    data: json
                                 });
 
                             }, (reason) => {
@@ -157,7 +156,7 @@ class Client {
                         }
                         
                     } else {
-                        reject(response);
+                        resolve(response);
 
                     }
 

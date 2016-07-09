@@ -54,26 +54,6 @@ class Resource {
         return uri;
     };
 
-    // Throws an error if action required credentials
-    //
-    // TO DONT!: make a call to an action <--- don't do this.
-    //
-    _handle_required_credentials(){
-        var credentials = this.client.getCredentials();
-
-        if (
-            credentials &&
-            true === this.options.auth_required &&
-            !credentials.access_token
-        ) {
-            throw [
-                'Resource',
-                this.options.name,
-                'requires authentication.'
-            ].join(' ');
-        }
-    }
-
     /*
      * decorate with credentials, when needed
      * call's the API's request
@@ -84,20 +64,12 @@ class Resource {
         data,
         headers
     ){
-        this._handle_required_credentials();
-
         if (
             !this.options.auth_required &&
             null === this.client._credentials
         ){
-            if (
-                'undefined' === typeof data ||
-                null === data
-            ){
-                var data = [];
-            }
-
             data.client_id = this.client.options.api_key;
+
         }
 
         return this.client.request(

@@ -1,7 +1,6 @@
-import { fetch as fetchBrowser } from 'whatwg-fetch';
 import fetchNode from 'node-fetch';
 
-let fetch = (
-    'undefined' === typeof XMLHttpRequest ? fetchNode : fetchBrowser
+let fetchCompatible = (
+    'undefined' === typeof fetch ? fetchNode : fetch
 );
-export default fetch;
+export default fetchCompatible;

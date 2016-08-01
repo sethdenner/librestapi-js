@@ -1,6 +1,10 @@
-import fetchNode from 'node-fetch';
+let fetchCompatible = undefined;
+try {
+    fetchCompatible = require('fetch');
 
-let fetchCompatible = (
-    'undefined' === typeof fetch ? fetchNode : fetch
-);
+} catch (e) {
+    // Fetch not installed try to use native.
+    fetchCompatible = fetch;
+}
+
 export default fetchCompatible;

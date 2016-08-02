@@ -1,10 +1,11 @@
 let fetchCompatible = undefined;
-try {
+
+if ('undefined' === typeof fetch) {
     fetchCompatible = require('fetch');
 
-} catch (e) {
-    // Fetch not installed try to use native.
+} else {
     fetchCompatible = fetch;
-}
+
+};
 
 export default fetchCompatible;

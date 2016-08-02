@@ -1,6 +1,5 @@
 define(function (require) {
     var registerSuite = require('intern!object');
-    var URLSearchParams = require('intern/dojo/node!urlsearchparams').URLSearchParams;
     var querystring = require('intern/dojo/node!querystring');
     var assert = require('intern/chai!assert');
 

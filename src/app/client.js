@@ -1,7 +1,5 @@
 import querystring from 'querystring';
 import extend from 'node.extend';
-import { Promise } from 'es6-promise';
-import fetch from './compat/fetch';
 
 class Client {
     constructor(options) {
@@ -127,7 +125,15 @@ class Client {
             fetch(options.uri, options).then(
                 function(response) {
                     if (response.ok) {
-                        let contentType = response.headers.get('content-type');
+                        let contentType = 'application/json';
+
+                        if (
+                            'undefined' !== typeof response.headers &&
+                            'undefined' !== typeof response.headers['content-type']
+                        ) {
+                            contentType = response.headers.get('content-type');
+
+                        }
 
                         if (
                             contentType &&

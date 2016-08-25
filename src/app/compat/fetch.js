@@ -1,11 +1,2 @@
-let fetchCompatible = undefined;
-
-if ('undefined' === typeof fetch) {
-    fetchCompatible = require('fetch');
-
-} else {
-    fetchCompatible = fetch;
-
-};
-
+let fetchCompatible = fetch;
 export default fetchCompatible;

@@ -83,8 +83,34 @@ class Client {
             options.body = undefined;
 
         } else {
-            options.headers['Content-Type'] = 'application/x-www-form-urlencoded';
-            options.body = querystring.stringify(options.body);
+            let contentType = options.headers['Content-Type'];
+            if ('undefined' === typeof contentType) {
+                contentType = this.options.contentType;
+
+            }
+            
+            if (
+                contentType == 'json' ||
+                contentType == 'application/json'
+            ) {
+                options.headers['Content-Type'] = 'application/json';
+                options.body = JSON.stringify(options.body);
+
+            } else if (
+                contentType == 'formdata' ||
+                contentType == 'application/x-www-form-urlencoded'
+            ) {
+                options.headers['Content-Type'] = 'application/x-www-form-urlencoded';
+                options.body = querystring.stringify(options.body)
+
+            } else {
+                throw [
+                    'The Content-Type',
+                    contentType,
+                    'is not supported by this client.'
+                ].join(' ');
+
+            }
 
         }
 

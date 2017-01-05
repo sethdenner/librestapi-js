@@ -1,7 +1,5 @@
 import querystring from 'querystring';
 import extend from 'node.extend';
-import { Promise } from 'es6-promise';
-import fetch from './compat/fetch';
 
 class Client {
     constructor(options) {
@@ -50,6 +48,7 @@ class Client {
 
             if (credentials.current_identity) {
                 headers['Current-Identity'] = credentials.current_identity;
+
             }
         }
 
@@ -85,7 +84,13 @@ class Client {
         } else {
             let contentType = options.headers['Content-Type'];
             if ('undefined' === typeof contentType) {
-                contentType = this.options.contentType;
+                if ('undefined' === typeof this.options.contentType) {
+                    contentType = 'json';
+                    
+                } else {
+                    contentType = this.options.contentType;
+
+                }
 
             }
             

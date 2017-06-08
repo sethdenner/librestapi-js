@@ -1,5 +1,6 @@
 import querystring from 'querystring';
 import extend from 'node.extend';
+import fetch from 'node-fetch';
 
 class Client {
     constructor(options) {

@@ -9,35 +9,22 @@ var UglifyJsPlugin = webpack.optimize.UglifyJsPlugin;
 var env = process.env.WEBPACK_ENV;
 
 var plugins = [], entry, outputFile;
+var resolve = {
+    root: path.resolve('./src'),
+    extensions: ['', '.js']
+};
 
 if (env === 'web') {
     plugins.push(new UglifyJsPlugin({ minimize: true }));
-    plugins.push(
-        new webpack.optimize.CommonsChunkPlugin(
-            'librestapiDeps',
-            'librestapi-deps.min.js'
-        )
-    );
-    plugins.push(
-        new webpack.ProvidePlugin({
-            'Promise': 'es6-promise',
-            'fetch': 'imports?this=>global!exports?global.fetch!whatwg-fetch'
-        })
-    );
-
     outputFile = libraryName + '.min.js';
-
     entry = {
-        'librestapi': __dirname + '/src/index.js',
-        'librestapiDeps': ["promise", "querystring", "node.extend"]
+        'librestapi': __dirname + '/src/index.js'
     }
-
     target = 'web';
 
 } else {
     outputFile = libraryName + '.js';
     entry = __dirname + '/src/index.js';
-
     target = 'node';
 
 }
@@ -67,10 +54,7 @@ var config = {
             }
         ]
     },
-    resolve: {
-        root: path.resolve('./src'),
-        extensions: ['', '.js']
-    },
+    resolve: resolve,
     plugins: plugins,
     target: target
 };

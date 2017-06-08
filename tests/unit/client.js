@@ -118,21 +118,19 @@ define(function (require) {
             };
 
             client.setCredentials(credentials);
-
-            client.request(
+            return client.request(
                 'get',
                 'https://example.com', {
                 }, {
                     testHeader: 'test-header=value'
                 }
             ).then(function(response) {
-
             }, function(response) {
-                assert(False, 'Http request failed.');
+                assert.isOk(false, 'Http request failed: ' + response);
 
             });
 
-        },
+        }
         
     });
 

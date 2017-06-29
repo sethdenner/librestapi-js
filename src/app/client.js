@@ -5,6 +5,7 @@ import 'isomorphic-fetch';
 import Promise from 'es6-promise';
 Promise.polyfill();
 
+
 class Client {
     constructor(options) {
         var defaults = {

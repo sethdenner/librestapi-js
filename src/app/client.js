@@ -1,6 +1,9 @@
 import querystring from 'querystring';
 import extend from 'node.extend';
-import fetch from 'node-fetch';
+
+import 'isomorphic-fetch';
+import Promise from 'es6-promise';
+Promise.polyfill();
 
 class Client {
     constructor(options) {
@@ -137,19 +140,8 @@ class Client {
 
             }
 
-            let defaultPort = uri.protocol === 'https:' ? '443' : '80';
-
-            let uriString = [
-                uri.protocol,
-                '//',
-                uri.host,
-                ':',
-                uri.port ? uri.port : defaultPort,
-                uri.path
-            ].join('');
-
             let options = this._prepare({
-                uri: uriString,
+                uri: uri,
                 method: method,
                 headers: headers,
                 body: data,

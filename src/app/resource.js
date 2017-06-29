@@ -6,7 +6,7 @@ class Resource {
         client,
         options
     ) {
-        var defaults = {
+        let defaults = {
             api_version: 'v0',
             path: null,
             auth_required: true,
@@ -23,19 +23,27 @@ class Resource {
         this.client = client;
     }
 
-    // returns a uri with an appropriate .path element
-    _assembleUri(
-        id
-    ){
-        var path = [
-            this.client.options.api_root.pathname,
-            this.options.api_version
+    _assembleUri(id){
+	// returns a uri string with an ID if appropriate.
+
+        let path = [
+            this.client.options.api_root,
         ];
+
+	let api_version = this.options.api_version;
+	if (
+            typeof(api_version) != 'undefined' &&
+            null !== api_version
+	) {
+	    path.push(api_version);
+
+        }
+
         path.push(this.options.path);
 
         if(
-            id!==undefined &&
-            id!==null
+            typeof(id) != 'undefined' &&
+            null !== id
         ){
             path.push(id);
         }
@@ -43,34 +51,30 @@ class Resource {
         path.push('');
         path = path.join('/');
 
-        var uri = extend(
-            {},
-            this.client.options.api_root, {
-                path : path,
-                pathname : path
-            }
-        );
-
-        return uri;
+        return path;
     };
 
-    /*
-     * decorate with credentials, when needed
-     * call's the API's request
-     */
     request(
         method,
         uri,
         data,
-        headers
+        headers,
+        id
     ){
+	/*
+	 decorate with credentials, when needed
+	 call's the API's request
+	 */
         if (
             !this.options.auth_required &&
-            null === this.client._credentials
+            null === this.client._credentials &&
+	    this.client.options.api_key
         ){
             data.client_id = this.client.options.api_key;
 
         }
+
+        uri = this._assembleUri(id);
 
         return this.client.request(
             method,
@@ -81,75 +85,91 @@ class Resource {
     }
 
     create(
-        data
+        data,
+        headers
     ) {
-        var method = 'POST';
-        var uri = this._assembleUri();
+        let method = 'POST';
+        let uri = this._assembleUri();
 
         return this.request(
             method,
             uri,
-            data
+            data,
+            headers
         );
     };
 
     update(
         id,
-        data
+        data,
+        headers
     ) {
         if (null === id) {
             throw 'Resource.update method requires id parameter.';
         }
 
-        var method = 'PUT';
-        var uri = this._assembleUri(id);
+        let method = 'PUT';
+        let uri = this._assembleUri(id);
 
         return this.request(
             method,
             uri,
-            data
+            data,
+            headers,
+            id
         );
     };
 
-
     retrieve(
         id,
-        data
+        data,
+        headers
     ) {
-        var method = 'GET';
-        var uri = this._assembleUri(id);
+        let method = 'GET';
+        let uri = this._assembleUri(id);
 
         return this.request(
             method,
             uri,
-            data
+            data,
+            headers,
+            id
         );
     };
 
     destroy(
-        id
+        id,
+        data,
+        headers
     ) {
         if (null === id) {
             throw 'Resource.destroy method requires id parameter.';
         }
 
-        var method = 'DELETE';
-        var uri = this._assembleUri(id);
+        let method = 'DELETE';
 
         return this.request(
             method,
-            uri
+            uri,
+            data,
+            headers,
+            id
         );
     }
 
-    options() {
-        var method = 'OPTIONS';
+    options(
+        data,
+        headers
+    ) {
+        let method = 'OPTIONS';
 
-        var uri = this._assembleUri();
+        let uri = this._assembleUri();
 
         return this.request(
             method,
-            uri
+            uri,
+            data,
+            headers
         );
     }
 }

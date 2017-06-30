@@ -1,7 +1,7 @@
 import querystring from 'querystring';
 import extend from 'node.extend';
 
-import 'isomorphic-fetch';
+import 'portable-fetch';
 import Promise from 'es6-promise';
 Promise.polyfill();
 

@@ -2,8 +2,7 @@ import querystring from 'querystring';
 import extend from 'node.extend';
 
 import 'portable-fetch';
-import Promise from 'es6-promise';
-Promise.polyfill();
+import Promise from 'promise';
 
 
 class Client {

@@ -1,6 +1,6 @@
 {
   "name": "librestapi",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "Light framework for defining javascript interfaces for REST based web services.",
   "main": "dist/index.js",
   "scripts": {

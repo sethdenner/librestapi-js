@@ -1,6 +1,6 @@
 {
   "name": "librestapi",
-  "version": "2.0.3",
+  "version": "2.1.0",
   "description": "Light framework for defining javascript interfaces for REST based web services.",
   "main": "dist/index.js",
   "scripts": {
@@ -50,7 +50,7 @@
   },
   "dependencies": {
     "node.extend": "^1.1.5",
-    "portable-fetch": "^2.3.0",
+    "portable-fetch": "^3.0.0",
     "promise": "^8.0.0",
     "querystring": "^0.2.0"
   }

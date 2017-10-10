@@ -14,12 +14,6 @@ echo ${1} > ~/.npmrc
 
     rm -rf ./node_modules
     npm install
-
-    VERSION=$(npm version patch)
-    git push
-    git tag -a ${VERSION} -m "Published Version: ${VERSION}"
-    git push origin ${VERSION}
-
     npm publish
     
 )

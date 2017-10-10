@@ -10,6 +10,7 @@ echo ${1} > ~/.npmrc
 
     git config --global user.email "seth@knotis.com"
     git config --global user.name "Jenkins Bot"
+    git config --global push.default matching
 
     rm -rf ./node_modules
     npm install

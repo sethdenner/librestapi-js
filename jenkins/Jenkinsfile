@@ -1,0 +1,62 @@
+pipeline {
+    agent {
+	dockerfile {
+	    dir 'jenkins'
+	    reuseNode true
+	}
+    }
+
+    environment {
+	GITHUB_JENKINS_TOKEN = credentials('GITHUB_JENKINS_TOKEN')
+	AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
+	AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
+	AWS_DEFAULT_REGION = 'us-west-2'
+
+	NPMRC_TOKEN_FILE = credentials('npm-publish-token')
+    }
+
+    stages {
+	stage ('Test Pull Request') {
+	    when {
+		allOf {
+		    not {
+			branch 'master'
+		    }
+		}
+	    }
+	    steps {
+		slackSend channel: 'development-robots', teamDomain: 'knotis', message: "*librestapi-js*\nTest have started running on branch ${env.BRANCH_NAME}.\nSee the run logs at:\n   ${env.BUILD_URL}\nSee the pull request at:\n    ${env.CHANGE_URL}", token: "${env.GITHUB_JENKINS_TOKEN}"
+		sh "npm install"
+		sh "npm run test"
+	    }
+	    post {
+		success {
+		    slackSend color: 'good', channel: 'development-robots', teamDomain: 'knotis', message: "*librestapi-js*\nTests have completed with a result of ${currentBuild.currentResult} for branch ${env.BRANCH_NAME}.\nSee the results at:\n   ${env.BUILD_URL}\nSee the pull request at:\n    ${env.CHANGE_URL}", token: "${env.GITHUB_JENKINS_TOKEN}"
+		}
+		failure {
+		    slackSend color: 'danger', channel: 'development-robots', teamDomain: 'knotis',  message: "*librestapi-js*\nTests have completed with a result of ${currentBuild.currentResult} for branch ${env.BRANCH_NAME}.\nSee the results at:\n   ${env.BUILD_URL}\nSee the pull request at:\n    ${env.CHANGE_URL}", token: "${env.GITHUB_JENKINS_TOKEN}"
+		}
+		unstable {
+		    slackSend color: 'warning', channel: 'development-robots', teamDomain: 'knotis',  message: "*librestapi-js*\nTests have completed with a result of ${currentBuild.currentResult} for branch ${env.BRANCH_NAME}.\nSee the results at:\n   ${env.BUILD_URL}\nSee the pull request at:\n    ${env.CHANGE_URL}", token: "${env.GITHUB_JENKINS_TOKEN}"
+		}
+	    }
+        }
+        stage('Publish to NPM') {
+	    when {
+		branch 'master'
+	    }
+            steps {
+		slackSend channel: 'development-robots', teamDomain: 'knotis', message: "*librestapi-js*\nPublishing latest version of 'librestapi-js' to npm.\nSee the run logs at:\n   ${env.BUILD_URL}", token: "${env.GITHUB_JENKINS_TOKEN}"
+		sh "./jenkins/scripts/publish.sh ${env.NPMRC_TOKEN_FILE}"
+            }
+	    post {
+		success {
+		    slackSend color: 'good', channel: 'development-robots', teamDomain: 'knotis', message: "Publishing '${env.BRANCH_NAME}' to NPM completed with a status code of ${currentBuild.currentResult}.\nSee the results at:\n   ${env.BUILD_URL}", token: "${env.GITHUB_JENKINS_TOKEN}"
+		}
+		failure {
+		    slackSend color: 'danger', channel: 'development-robots', teamDomain: 'knotis', message: "Publishing '${env.BRANCH_NAME}' to NPM completed with a status code of ${currentBuild.currentResult}.\nSee the results at:\n   ${env.BUILD_URL}", token: "${env.GITHUB_JENKINS_TOKEN}"
+		}
+	    }
+        }
+    }
+}

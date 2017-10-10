@@ -4,12 +4,11 @@
   "description": "Light framework for defining javascript interfaces for REST based web services.",
   "main": "dist/index.js",
   "scripts": {
-    "clean": "rm -rf dist/*",
+    "clean": "rm -rf ./dist",
     "build": "babel src --out-dir dist",
     "build-dev": "babel src --out-dir dist --source-maps",
     "build-web": "WEBPACK_ENV=web webpack --progress --profile --colors",
     "prepublish": "npm run clean && npm run build",
-    "start-fakeapi": "babel tests/api/server.js | nohup node &> /dev/null & echo $!",
     "test": "./tests/run.sh"
   },
   "repository": {

@@ -16,9 +16,12 @@ echo ${1} > ~/.npmrc
     npm install
 
     VERSION=$(npm version patch)
-    git push
-    git tag -a ${VERSION} -m "Published Version: ${VERSION}"
-
     npm publish
 
+    git push
+
+    git tag --delete ${VERSION}
+    git tag -a ${VERSION} -m "Published Version: ${VERSION}"
+    git push origin ${VERSION}
+    
 )

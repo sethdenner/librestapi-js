@@ -8,6 +8,9 @@ echo ${1} > ~/.npmrc
     # Default to dev environment
     cd $RUN_ROOT
 
+    git config --global user.email "seth@knotis.com"
+    git config --global user.name "Jenkins Bot"
+
     rm -rf ./node_modules
     npm install
 

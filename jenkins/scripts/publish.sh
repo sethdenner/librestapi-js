@@ -10,18 +10,16 @@ echo ${1} > ~/.npmrc
 
     git config --global user.email "seth@knotis.com"
     git config --global user.name "Jenkins Bot"
-    git config --global push.default matching
+    git config --global push.default simple
 
     rm -rf ./node_modules
     npm install
 
     VERSION=$(npm version patch)
-    npm publish
-
     git push
-
-    git tag --delete ${VERSION}
     git tag -a ${VERSION} -m "Published Version: ${VERSION}"
     git push origin ${VERSION}
+
+    npm publish
     
 )

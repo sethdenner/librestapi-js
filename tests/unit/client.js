@@ -17,6 +17,7 @@ define(function (require) {
         test_constructor: function () {
             var options = {
                 api_key: 'test_key',
+		api_secret: 'test_secret',
                 api_root: 'test_root',
                 auth_uri: 'test_auth',
             };

@@ -9,6 +9,7 @@ class Client {
     constructor(options) {
         var defaults = {
             api_key: null,
+            api_secret: null,
             api_root: {},
             auth_uri: null
         };
